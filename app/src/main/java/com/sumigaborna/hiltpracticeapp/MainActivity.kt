@@ -1,10 +1,13 @@
 package com.sumigaborna.hiltpracticeapp
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.HiltAndroidApp
+import dagger.hilt.android.scopes.ActivityScoped
+import dagger.hilt.android.scopes.FragmentScoped
 import javax.inject.Inject
+import javax.inject.Singleton
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -16,15 +19,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         println(someClass.doAThing())
-        println(someClass.doSomeOtherThing())
     }
 }
 
-class SomeClass @Inject constructor(private val someOtherClass: SomeOtherClass){
-    fun doAThing():String = "Look I did a thing"
-    fun doSomeOtherThing():String = someOtherClass.doSomeOtherThing()
+@AndroidEntryPoint
+class MyFragment : Fragment(){
+
+    @Inject
+    lateinit var someClass: SomeClass
+
 }
 
-class SomeOtherClass @Inject constructor(){
-    fun doSomeOtherThing() : String = "Look this is some other thing"
+//@FragmentScoped //this won't run because fragment scope is smaller than @ActivityScoped
+@ActivityScoped
+class SomeClass @Inject constructor() {
+    fun doAThing(): String = "Look I did a thing"
 }

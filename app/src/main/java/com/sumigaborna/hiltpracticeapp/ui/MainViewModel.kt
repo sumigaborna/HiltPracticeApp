@@ -1,22 +1,23 @@
 package com.sumigaborna.hiltpracticeapp.ui
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import com.sumigaborna.hiltpracticeapp.repository.MainRepository
 import com.sumigaborna.hiltpracticeapp.model.Blog
+import com.sumigaborna.hiltpracticeapp.repository.MainRepository
 import com.sumigaborna.hiltpracticeapp.util.DataState
-import androidx.hilt.Assisted
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
+@HiltViewModel
 class MainViewModel
-@ViewModelInject
+@Inject
 constructor(
     private val mainRepository: MainRepository,
-    @Assisted private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val _dataState: MutableLiveData<DataState<List<Blog>>> = MutableLiveData()

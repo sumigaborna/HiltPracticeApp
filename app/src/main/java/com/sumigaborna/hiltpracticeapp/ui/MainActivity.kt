@@ -1,8 +1,8 @@
-package com.sumigaborna.hiltpracticeapp
+package com.sumigaborna.hiltpracticeapp.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.google.gson.Gson
+import com.sumigaborna.hiltpracticeapp.R
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,16 +16,20 @@ import javax.inject.Qualifier
 class MainActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var someClass: SomeClass
+    lateinit var fragmentFactory: MainFragmentFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        println(someClass.doAThing1())
-        println(someClass.doAThing2())
+        supportFragmentManager.fragmentFactory = fragmentFactory
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.main_fragment_container, MainFragment::class.java, null)
+            .commitAllowingStateLoss()
+
     }
 }
+/*
 
 class SomeClass
 @Inject
@@ -73,9 +77,9 @@ class MyModule {
 }
 
 @Qualifier
-@Retention(AnnotationRetention.BINARY)
+@Retention(AnnotationRetention.RUNTIME)
 annotation class Impl1
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class Impl2
+annotation class Impl2*/
